@@ -1,2 +1,2 @@
 # projeto-arquivos
-Projeto de Arquivos
+Materiais utilizados na disciplina de Projeto de Arquivos (Estrutura de Dados II)
