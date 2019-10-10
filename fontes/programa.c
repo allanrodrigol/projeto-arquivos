@@ -4,43 +4,46 @@
 
 void exibe(void *valor);
 
+int compara(void *v1, void *v2);
+
 int main(void) {
   Arvore *arvore = cria(sizeof(int));
 
   int valor = 5;
-  No *no5 = adiciona(arvore, NULL, &valor);
+  adiciona(arvore, &valor, compara);
 
   valor = 3;
-  No *no3 = adiciona(arvore,no5,&valor);
+  adiciona(arvore, &valor, compara);
 
   valor = 7;
-  No *no7 = adiciona(arvore,no5,&valor);
-
-  no5->esquerda = no3;
-  no5->direita = no7;
+  adiciona(arvore, &valor, compara);
 
   valor = 2;
-  No *no2 = adiciona(arvore,no3,&valor);
+  adiciona(arvore, &valor, compara);
 
   valor = 4;
-  No *no4 = adiciona(arvore,no3,&valor);
-
-  no3->esquerda = no2;
-  no3->direita = no4;
+  adiciona(arvore, &valor, compara);
 
   valor = 6;
-  No *no6 = adiciona(arvore,no7,&valor);
+  adiciona(arvore, &valor, compara);
 
   valor = 8;
-  No *no8 = adiciona(arvore,no7,&valor);
-
-  no7->esquerda = no6;
-  no7->direita = no8;
+  adiciona(arvore, &valor, compara);
 
   percorre(arvore->raiz, exibe);
   printf("\n");
 
   return 0;
+}
+
+int compara(void *v1, void *v2) {
+  if (*(int*) v1 > *(int*) v2) {
+    return 1;
+  } else if (*(int*) v1 == *(int*) v2) {
+    return 0;
+  } else {
+    return -1;
+  }
 }
 
 void exibe(void *valor) {
