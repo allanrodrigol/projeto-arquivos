@@ -16,6 +16,8 @@ typedef struct arvore {
   int (*compara)(void *, void *);
 } Arvore;
 
+void balanceamento(No *no);
+
 Arvore* cria(int tamanho, int (compara)(void *, void *) ) {
   Arvore *arvore = malloc(sizeof(Arvore));
   arvore->raiz = NULL;
@@ -68,6 +70,8 @@ No* adiciona(Arvore *arvore, void *valor) {
       pai->esquerda = no;
     }
   }
+
+  balanceamento(no);
   
   return no;
 }
@@ -78,5 +82,62 @@ void percorre(No* no, void (visita)(void *valor)) {
 
     percorre(no->esquerda, visita);
     percorre(no->direita, visita);
+  }
+}
+
+int altura(No *no) {
+  int esquerda = 0;
+  int direita = 0;
+
+  if (no->esquerda != NULL) {
+    esquerda = altura(no->esquerda) + 1;
+  }
+
+  if (no->direita != NULL) {
+    direita = altura(no->direita) + 1;
+  }
+
+  return direita > esquerda ? direita : esquerda;
+}
+
+int fb(No *no) {
+  int esquerda = 0;
+  int direita = 0;
+
+  if (no->direita != NULL) {
+    direita = altura(no->direita);
+  }
+
+  if (no->esquerda != NULL) {
+    esquerda = altura(no->esquerda);
+  }
+
+  return esquerda - direita;
+}
+
+void balanceamento(No *no) {
+  while (no != NULL) {
+    int fator = fb(no);
+    printf("FB(%d) = %d\n",*(int*) no->v, fator);
+    
+    if (fator > 1) {
+      fator = fb(no->esquerda);
+
+      if (fator > 0) {
+        printf("RSD %d\n", *(int*) no->v);
+      } else {
+        printf("RDD %d\n", *(int*) no->v);
+      }
+    } else if (fator < -1){
+      fator = fb(no->direita);
+
+      if (fator < 0) {
+        printf("RSE %d\n", *(int*) no->v);
+      } else {
+        printf("RDE %d\n", *(int*) no->v);
+      }
+    }
+
+    no = no->pai;
   }
 }
